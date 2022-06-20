@@ -3,6 +3,7 @@ const BASE_URL = `https://api.themoviedb.org/3`;
 const discoverEndpoint = '/discover/tv';
 const searchEndpoint = '/search/tv';
 const detailsEndpoint = '/tv';
+const providersEndpoint = "/watch/providers/tv"
 
 const getShowsByProviderId = async (id) => {
   const request = await fetch(
@@ -47,3 +48,12 @@ export const getShowDetails = async (id) => {
   const details = response;
   return details;
 };
+
+export const getProviders = async () => {
+  const URL =
+    BASE_URL + providersEndpoint + `?api_key=${API_KEY}&language=en-US&watch_region=CA`;
+  const request = await fetch(URL);
+  const response = await request.json();
+  console.log(response);
+  return response;
+}
