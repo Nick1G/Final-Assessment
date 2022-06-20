@@ -27,11 +27,11 @@ const DetailsPage = ({ watchList, toggle }) => {
             <h1>{showDetails.name}</h1>
             <div className="description">{showDetails.overview}</div>
             {onWatchList ? (
-              <button className="remove-to-watchlist">
+              <button onClick={() => toggle(showDetails)} className="remove-to-watchlist">
                 - Remove from watch list
               </button>
             ) : (
-              <button className="add-to-watchlist">+ Add to watch list</button>
+              <button onClick={() => toggle(showDetails)} className="add-to-watchlist">+ Add to watch list</button>
             )}
           </div>
         </div>
