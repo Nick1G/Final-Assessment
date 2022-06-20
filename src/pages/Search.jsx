@@ -21,21 +21,13 @@ const SearchPage = ({ watchList, toggle }) => {
 
   return (
     <>
-      {/* {titles ? (
-        <TitleList
-          name={`shows matching your search: "${query}"`}
-          titles={titles}
-          watchList={watchList}
-          toggle={toggle}
-        />
-      ) : (
-        <h2>No matching results</h2>
-      )} */}
       {data && 
         <Pagination
           currentPageNumber={data.page}
           pageLimit={data.total_pages}
-          dataLimit={data.total_results}
+          initialResults={data.results}
+          watchList={watchList}
+          toggle={toggle}
         />
       }
     </>
