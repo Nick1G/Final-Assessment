@@ -1,7 +1,6 @@
 import { useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { searchShows } from '../services/tmdb-api';
-import TitleList from '../components/TitleList';
 import Pagination from "../components/Pagination";
 
 const SearchPage = ({ watchList, toggle }) => {
@@ -12,12 +11,12 @@ const SearchPage = ({ watchList, toggle }) => {
   const page = params.get('page');
 
   useEffect(() => {
-    if (query) {
+    if (query !== "") {
       searchShows(query, page).then(response => {
         setData(response);
       });
     }
-  }, [query]);
+  }, [location]);
 
   return (
     <>
@@ -25,7 +24,7 @@ const SearchPage = ({ watchList, toggle }) => {
         <Pagination
           currentPageNumber={data.page}
           pageLimit={data.total_pages}
-          initialResults={data.results}
+          searchResults={data.results}
           watchList={watchList}
           toggle={toggle}
         />
