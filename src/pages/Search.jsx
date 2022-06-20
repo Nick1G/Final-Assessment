@@ -14,15 +14,13 @@ const SearchPage = ({ watchList, toggle }) => {
   useEffect(() => {
     searchShows(query, 1).then(response => setPageLimit(response.total_pages));
 
-    if (searchParams.has("page")) {
-      if (page < 1 || page > pageLimit) {
-        searchParams.set("page", 1);
-        setSearchParams(searchParams);
-      }
+    if (page < 1 || page > pageLimit) {
+      searchParams.set("page", 1);
+      setSearchParams(searchParams);
     }
 
     if (query !== "") {
-      searchShows(query, searchParams.get("page")).then(response => {
+      searchShows(query, page).then(response => {
         setData(response);
       });
     }
