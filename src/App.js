@@ -54,7 +54,7 @@ function App() {
         <Route
           path="/providers"
           element={
-            <ProvidersPage />
+            <ProvidersPage watchList={watchList} toggle={handleToggle}/>
           }
         />
       </Routes>

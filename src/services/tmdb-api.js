@@ -5,7 +5,7 @@ const searchEndpoint = '/search/tv';
 const detailsEndpoint = '/tv';
 const providersEndpoint = "/watch/providers/tv"
 
-const getShowsByProviderId = async (id) => {
+export const getShowsByProviderId = async (id) => {
   const request = await fetch(
     BASE_URL +
       discoverEndpoint +
@@ -54,6 +54,6 @@ export const getProviders = async () => {
     BASE_URL + providersEndpoint + `?api_key=${API_KEY}&language=en-US&watch_region=CA`;
   const request = await fetch(URL);
   const response = await request.json();
-  console.log(response);
-  return response;
+  const providers = response.results;
+  return providers;
 }
