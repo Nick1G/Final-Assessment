@@ -10,7 +10,7 @@ const SearchForm = () => {
     if (/^\s+$/.test(queryValue) || queryValue === "") {
       return;
     }
-    navigate({ pathname: "/search", search: `query=${queryValue}` });
+    navigate({ pathname: "/search", search: `query=${queryValue}&page=1` });
     setQueryValue("");
   };
 

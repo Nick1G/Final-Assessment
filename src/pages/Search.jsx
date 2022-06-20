@@ -1,32 +1,44 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { searchShows } from '../services/tmdb-api';
-import TitleList from '../components/TitleList';
+import Pagination from "../components/Pagination";
 
 const SearchPage = ({ watchList, toggle }) => {
-  const [titles, setTitles] = useState(null);
+  const [data, setData] = useState(null);
+  const [pageLimit, setPageLimit] = useState(null);
   const location = useLocation();
-  const params = new URLSearchParams(location.search);
-  const query = params.get('query');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const query = searchParams.get('query');
+  const page = searchParams.get('page');
 
   useEffect(() => {
-    if (query) {
-      searchShows(query).then((titles) => setTitles(titles));
+    searchShows(query, 1).then(response => setPageLimit(response.total_pages));
+
+    if (searchParams.has("page")) {
+      if (page < 1 || page > pageLimit) {
+        searchParams.set("page", 1);
+        setSearchParams(searchParams);
+      }
     }
-  }, [query]);
+
+    if (query !== "") {
+      searchShows(query, searchParams.get("page")).then(response => {
+        setData(response);
+      });
+    }
+  }, [location]);
 
   return (
     <>
-      {titles ? (
-        <TitleList
-          name={`shows matching your search: "${query}"`}
-          titles={titles}
+      {data && 
+        <Pagination
+          currentPageNumber={data.page}
+          pageLimit={data.total_pages}
+          searchResults={data.results}
           watchList={watchList}
           toggle={toggle}
         />
-      ) : (
-        <h2>No matching results</h2>
-      )}
+      }
     </>
   );
 };

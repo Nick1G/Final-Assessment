@@ -7,26 +7,46 @@ import { useSearchParams, useLocation } from "react-router-dom";
 const ProvidersPage = ({ watchList, toggle }) => {
   const [providers, setProviders] = useState(null);
   const [providerMovies, setProviderMovies] = useState(null);
-  const [searchParams] = useSearchParams();
+  const [displayName, setDisplayName] = useState(null);
+  const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
+  const searchId = searchParams.get("id");
 
   useEffect(() => {
     getProviders().then((results) => setProviders(results));
   }, []);
 
   useEffect(() => {
-    searchParams.has("id") ?
-      getShowsByProviderId(searchParams.get("id")).then(results => setProviderMovies(results)) :
+    if (searchParams.has("id")) {
+      if (!Number.isInteger(parseInt(searchId))) {
+        searchParams.delete("id");
+        setSearchParams(searchParams);
+        return;
+      }
+
+      if (providers) {
+        setDisplayName(providers.find(provider => provider.provider_id == searchId).provider_name);
+      }
+      else {
+        searchParams.delete("id");
+        setSearchParams(searchParams);
+        return;
+      }
+
+      getShowsByProviderId(searchId).then(results => setProviderMovies(results));
+    }
+    else {
       setProviderMovies(null);
+    }
   }, [location]);
 
   return (
     <>
       {!providerMovies && providers ? 
-        <ProviderList name="Providers" providers={providers}/> :
+        <ProviderList name="TV Providers" providers={providers}/> :
         <>
-          {providerMovies && 
-            <TitleList name="Results" titles={providerMovies} watchList={watchList} toggle={toggle}/>
+          {providerMovies &&
+            <TitleList name={displayName} titles={providerMovies} watchList={watchList} toggle={toggle}/>
           }
         </>
       }

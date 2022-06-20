@@ -29,15 +29,14 @@ export const getShowsByAllProviders = (providers) => {
   return Promise.all(responses);
 };
 
-export const searchShows = async (query) => {
+export const searchShows = async (query, pageNumber) => {
   const URL =
     BASE_URL +
     searchEndpoint +
-    `?api_key=${API_KEY}&language=en-US&page=1&include_adult=false&query=${query}`;
+    `?api_key=${API_KEY}&language=en-US&page=${pageNumber}&include_adult=false&query=${query}`;
   const request = await fetch(URL);
   const response = await request.json();
-  const shows = await response.results;
-  return shows;
+  return response;
 };
 
 export const getShowDetails = async (id) => {
